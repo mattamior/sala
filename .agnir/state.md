@@ -18,6 +18,11 @@
 - 对局部修改追求最小必要变更：清楚区分改动目标、必须保留的部分、边界和复核标准；支持参考素材的高精度复刻。
 - 白模/灰模动态预演、以及从参考视频重建空间布局与运动的能力具有潜力，但真实性能与可实现范围尚未验证，**不是已承诺的 V1 功能**。
 
+## 核心 Agent 闭环草案（待评审）
+
+- 已形成 `docs/agent-core-loop.md` 讨论稿 v0.1：整理意图理解、参考分析、澄清与规划、执行、质量检查、反馈继承六阶段及验证场景。**此为工作提案，并非新产品决议或已实现功能。**
+- 下一步优先评审「创作共识的最小单元及跨轮继承」，再逐步厘清澄清触发、保留约束与验收责任。
+
 ## 当前上下文与边界
 
 - 发起者有一台 **Mac mini M6 / 24GB 统一内存 / 512GB SSD**，作为可选原型和本地测试环境，不代表目标产品必须仅支持该硬件。
@@ -28,7 +33,7 @@
 ## 持续性入口
 
 - 设计共识：`docs/product-vision.md`、`docs/interaction-principles.md`。
-- 备选能力与研究：`docs/capability-landscape.md`。
+- 备选能力与研究：`docs/capability-landscape.md`；核心闭环工作草案：`docs/agent-core-loop.md`。
 - 未决问题：`docs/open-questions.md`。
 - 关键决策：`.agnir/decisions.md`。
 - 初始化与讨论来源证据：`.agnir/evidence/2026-10-18-initialization.md`。

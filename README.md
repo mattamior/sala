@@ -24,6 +24,7 @@
 - [交互原则与典型案例](docs/interaction-principles.md)
 - [已讨论的能力及研究方向](docs/capability-landscape.md)
 - [仍待决策的问题](docs/open-questions.md)
+- [Agent 核心能力闭环（讨论稿 v0.1，待评审）](docs/agent-core-loop.md)
 
 ## 开发状态
 
