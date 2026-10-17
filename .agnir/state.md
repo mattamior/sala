@@ -23,6 +23,11 @@
 - 已形成 `docs/agent-core-loop.md` 讨论稿 v0.1：整理意图理解、参考分析、澄清与规划、执行、质量检查、反馈继承六阶段及验证场景。**此为工作提案，并非新产品决议或已实现功能。**
 - 下一步优先评审「创作共识的最小单元及跨轮继承」，再逐步厘清澄清触发、保留约束与验收责任。
 
+## 创作共识机制（当前讨论重点）
+
+- 维护者明确同意：**优先设计创作共识的表示、约束继承与版本关系，再决定 Agent 底层框架**。这是一项讨论优先级决定，不表示已批准具体实现。
+- 已新增 `docs/creative-consensus.md` 讨论稿 v0.1：提出目标/约束/锚点/引用/用户决定/验收分离，跨轮增量更新与冲突处理，以及十个未执行的验收场景。**机制细节均待评审**。
+
 ## 当前上下文与边界
 
 - 发起者有一台 **Mac mini M6 / 24GB 统一内存 / 512GB SSD**，作为可选原型和本地测试环境，不代表目标产品必须仅支持该硬件。
@@ -33,7 +38,7 @@
 ## 持续性入口
 
 - 设计共识：`docs/product-vision.md`、`docs/interaction-principles.md`。
-- 备选能力与研究：`docs/capability-landscape.md`；核心闭环工作草案：`docs/agent-core-loop.md`。
+- 备选能力与研究：`docs/capability-landscape.md`；核心闭环工作草案：`docs/agent-core-loop.md`；创作共识讨论稿：`docs/creative-consensus.md`。
 - 未决问题：`docs/open-questions.md`。
 - 关键决策：`.agnir/decisions.md`。
 - 初始化与讨论来源证据：`.agnir/evidence/2026-10-18-initialization.md`。
