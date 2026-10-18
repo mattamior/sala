@@ -139,7 +139,7 @@ class ProviderTests(unittest.TestCase):
     def test_wrong_doctor_answer_fails(self):
         with self.env(), patch("sala.planner.urllib.request.urlopen",
                                return_value=FakeResponse(completion('{"action":"trim","start_seconds":0,"end_seconds":2}'))):
-            with self.assertRaisesRegex(SalaError, "语义检查"):
+            with self.assertRaisesRegex(SalaError, "未正确理解"):
                 diagnose_llm()
 
 
