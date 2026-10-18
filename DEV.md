@@ -1,4 +1,4 @@
-# sala prototype 0.1 — first executable slice
+# sala prototype 0.1 — executable slice + M2.1 bounded conversation
 
 **Status:** runnable engineering spike; not a usable end-user desktop app and not a full autonomous generative Agent.
 
@@ -35,4 +35,33 @@ Supported default rule-based instructions are intentionally narrow, including `�
 
 ## Next code milestone
 
-Evaluate the optional LLM planner against a real configured provider, then implement a two-turn constraint-aware plan/clarify/execute loop (with tests) before wiring in an independent media-generation backend. UI comes after the loop is useful.
+Connect and evaluate the optional LLM planner against a real provider (M2.2), then wire in an independent image/video generation backend (M2.3). Continue hardening clarification and constraint tests. UI comes after the loop is useful.
+
+## M2.1 — persistent `chat` turns (implemented, bounded)
+
+Use the existing project from `init` (or create a fresh one). All commands are separate processes, and conversation/clarification state persists in the same `.sala/project.json` file:
+
+```bash
+PYTHONPATH=src python -m sala chat --project ./demo "截取视频第1到3秒"
+PYTHONPATH=src python -m sala chat --project ./demo "把刚才那段的第1秒导出成图片"
+PYTHONPATH=src python -m sala chat --project ./demo "提取画面"
+# sala asks: 要提取视频的第几秒画面？
+PYTHONPATH=src python -m sala chat --project ./demo "第 1 秒"
+PYTHONPATH=src python -m sala status --project ./demo
+```
+
+- `completed`: executed one allowlisted FFmpeg action, saved asset and current version/history.
+- `needs_clarification`: saved a short question; if the question asks for a frame time, reply in the next turn with e.g. `第 1 秒` to complete it. The source must still match; an explicit new instruction replaces the pending question.
+- `blocked`: unsupported strict preservation constraint was recorded, **not** executed. For example `人物转身更快，其他镜头保持不变`.
+- `--dry-run`: displays a proposed action or question without writing state or output.
+- `--planner llm`: still optional. It only interprets otherwise unsupported phrasing for explicitly named, allowlisted trim/frame intents. Output is validated again before execution; unsupported creative edits and preservation-sensitive requests are intercepted before invoking the model.
+- Bare times like `1到3秒` are **not** accepted as a command unless a valid pending clarification gives them an unambiguous meaning. `刚才那段` only refers to the currently active clip produced by an earlier trim.
+- Existing `run` and existing project schema remain readable. `chat` adds optional `conversation`, `pending`, `last_goal` and `constraints` state fields, without changing schema version.
+- Existing media is not overwritten. The history of a blocked request does **not** mean the request was satisfied.
+- **Limitations:** not a general-purpose conversational or generative Agent; no automatic shot/identity analysis, general persistent constraint solver, scene edits, or multi-tool autonomous plan. No cross-process exclusive lock; use one writer per project. Real LLM provider behavior is untested.
+
+Run all existing and new tests with:
+
+```bash
+PYTHONPATH=src python -m unittest discover -s tests -v
+```
