@@ -123,7 +123,13 @@ def _resolve(state: dict[str, Any], instruction: str,
         history = [*state.get("history", [])]
         for turn in state.get("conversation", [])[-2:]:
             history.append({"instruction": turn.get("instruction", "")})
-        action = planner(instruction, {"source_duration": duration, "history": history})
+        from .planner import PlannerClarification, PlannerUnsupported
+        try:
+            action = planner(instruction, {"source_duration": duration, "history": history})
+        except PlannerClarification as exc:
+            return None, exc.question, None
+        except PlannerUnsupported as exc:
+            return None, "该创作请求当前无法执行：" + exc.reason, None
         return action, None, None
 
     return None, "目前只能截取视频或提取画面。请给出明确操作和时间范围。", None

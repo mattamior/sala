@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse,json,sys
 from pathlib import Path
 from .core import SalaError,execute,initialize,read_state
-from .planner import plan_with_llm
+from .planner import plan_with_llm, diagnose_llm
 from .session import chat_turn
 
 def build_parser()->argparse.ArgumentParser:
@@ -22,6 +22,8 @@ def build_parser()->argparse.ArgumentParser:
     chat.add_argument('--dry-run',action='store_true')
     chat.add_argument('--planner',choices=('rules','llm'),default='rules')
     chat.add_argument('instruction',help='Next user turn (including answers to clarifications)')
+    doctor=commands.add_parser('doctor',help='Check an LLM API connection without modifying a project')
+    doctor.add_argument('target',choices=('llm',))
     status=commands.add_parser('status',help='Show active media and project history')
     status.add_argument('--project',type=Path,required=True)
     return parser
@@ -31,6 +33,7 @@ def main(argv:list[str]|None=None)->int:
     try:
         if args.command=='init':result=initialize(args.project.resolve(),args.source)
         elif args.command=='status':result=read_state(args.project.resolve())
+        elif args.command=='doctor':result=diagnose_llm()
         elif args.command=='run':
             result=execute(args.project.resolve(),args.instruction,dry_run=args.dry_run,
                            planner=plan_with_llm if args.planner=='llm' else None)
